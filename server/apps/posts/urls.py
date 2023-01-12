@@ -8,4 +8,5 @@ urlpatterns = [
     path("posts/<int:pk>",posts_retrieve),
     path("posts/<int:pk>/delete",posts_delete),
     path("posts/<int:pk>/update",posts_update),
+    
 ]

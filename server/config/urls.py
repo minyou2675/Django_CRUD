@@ -19,5 +19,5 @@ from apps.posts import apps
 
 urlpatterns = [
     path("",include('apps.posts.urls')),
-    path("admin/", admin.site.urls),
+    
 ]

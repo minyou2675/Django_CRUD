@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from server.apps.posts.models import Post
+from django.http.request import HttpRequest
 
 # Create your views here.
 def hello_world(request):

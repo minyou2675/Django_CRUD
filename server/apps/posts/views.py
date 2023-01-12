@@ -6,8 +6,10 @@ def hello_world(request):
     return render(request,"posts/hello_world.html")
 
 def posts_list(request, *args,**kwargs):
+    text = request.GET.get("text")
     posts = Post.objects.all()
-    print({"posts" : posts})
+    if text:
+        posts = posts.filter(content__contains=text) # 
     return render(request,"posts/posts_lists.html",{"posts" : posts})
 
 def posts_retrieve(request,pk,*args,**kwargs):
@@ -29,8 +31,21 @@ def posts_create(request, *args , **kwargs):
         return redirect("/")
     
     return render(request,"posts/posts_create.html")#첫번째
+def posts_update(request, pk, *args, **kwargs):
+        post = Post.objects.get(id=pk)
+        if request.method == "POST":
+            
+                post.title = request.POST['title']
+                post.user = request.POST['user']
+                post.region = request.POST['region']
+                post.price=request.POST['price']
+                post.content =request.POST['content']
+                post.save()
 
-# def create(request, *args, **kwargs):
+            
+                return redirect(f"posts/{post.id}")
+        return render(request, "posts/posts_update.html",{"post":post})
+
 #     return render(request, "posts/create.html")
 def posts_delete(request,pk,*args,**kwargs):
     if request.method =="POST":

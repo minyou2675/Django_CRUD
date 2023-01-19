@@ -1,0 +1,26 @@
+{% extends "header.html" %}
+
+{% block content %}
+<form action="/idea/create" method="post", enctype="multipart/form-data">
+{% csrf_token %}
+<small>아이디어명</small>
+<input name="name"/>
+<br>
+<small>Image</small>
+<input type="file" name="image"/>
+<br/>
+<small>아이디어 설명</small>
+<textarea name="description"></textarea>
+<br/>
+<small>아이디어 관심도</small>
+<input name="interest"/>
+<br/>
+<small>예상 개발툴</small>
+<select name="devtool" id="devtool">
+    <option value="none">------</option>
+</select>
+<div>
+    <input type="submit", value="SUBMIT"/>
+</div>
+</form>
+{% endblock content %}

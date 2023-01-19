@@ -1,0 +1,9 @@
+{% extends "header.html" %}
+{%block content %}
+{% for tool in tools %}
+<p>{{tool.name}}</p>
+<p>{{tool.kind}}</p>
+<p>{{tool.description}}</p>
+<br>
+{% endfor %}
+{% endblock content %}

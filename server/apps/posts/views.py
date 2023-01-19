@@ -1,57 +1,73 @@
 from django.shortcuts import render,redirect
-from server.apps.posts.models import Post
+from server.apps.posts.models import Idea,Tool
 from django.http.request import HttpRequest
 
 # Create your views here.
-def hello_world(request):
-    return render(request,"posts/hello_world.html")
 
-def posts_list(request, *args,**kwargs):
-    text = request.GET.get("text")
-    posts = Post.objects.all()
-    if text:
-        posts = posts.filter(content__contains=text) # 
-    return render(request,"posts/posts_lists.html",{"posts" : posts})
+def idea_list(request:HttpRequest):
+    ideas = Idea.objects.all()
+    search_mode = request.GET['search_,mode']
+    if search_mode:
+        ideas = ideas.filter().order_by
+    return render(request,"idea/idea_list.html",{"ideas":ideas})
 
-def posts_retrieve(request,pk,*args,**kwargs):
-    print("pk",pk)
-    post = Post.objects.all().get(id=pk)
-    return render(request,"posts/posts_retrieve.html",{"post" : post})
-
-def posts_create(request, *args , **kwargs):
-    print(request.method) #작성시
+def idea_create(request=HttpRequest):
     if request.method == "POST":
-        Post.objects.create(
-            title=request.POST['title'],
-            user=request.POST['user'],
-            region=request.POST['region'],
-            price=request.POST['price'],
-            content=request.POST['content'],
-            
+        Idea.objects.create(
+            name=request.POST['name'],
+            image=request.FILES['image'],
+            description = request.POST['description'],
+            interest = request.POST['interest'],
+            devtool = request.POST['devtool']
         )
-        return redirect("/")
-    
-    return render(request,"posts/posts_create.html")#첫번째
-def posts_update(request, pk, *args, **kwargs):
-        post = Post.objects.get(id=pk)
-        if request.method == "POST":
-            
-                post.title = request.POST['title']
-                post.user = request.POST['user']
-                post.region = request.POST['region']
-                post.price=request.POST['price']
-                post.content =request.POST['content']
-                post.save()
+        return redirect("/")    
+    return render(request, "idea/idea_create.html")
 
-            
-                return redirect(f"posts/{post.id}")
-        return render(request, "posts/posts_update.html",{"post":post})
+def idea_detail(request,pk):
+    idea = Idea.objects.get(pk=pk)
+    return render(request,"idea/idea_detail.html",{"idea" : idea})
 
-#     return render(request, "posts/create.html")
-def posts_delete(request,pk,*args,**kwargs):
-    if request.method =="POST":
-        post = Post.objects.get(id=pk)
-        print(post)
-        print("!!!!")
-        post.delete()
+def idea_update(request,pk):
+    idea = Idea.objects.all().get(pk=pk)
+    if request.method == "POST":
+        idea.name = request.POST['name']
+        idea.image = request.FILES['image']
+        idea.description = request.POST['description']
+        idea.interest = request.POST['interest']
+        idea.devtool = request.POST['devtool']
+        return redirect(f"idea/{idea.pk}")
+    return render(request,"idea/idea_update.html",{"idea" : idea})
+
+def idea_delete(request:HttpRequest, pk, *args, **kwargs):
+    if request.method == "POST":
+        idea = Idea.objects.get(id=pk)
+        idea.delete()
     return redirect("/")
+
+def tool_list(request):
+    tools = Tool.objects.all()
+    return render(request,"idea/idea_list.html",{"tools":tools})
+
+def tool_create(request):
+    if request.method == "POST":
+        Tool.objects.create(
+            name=request.POST['name'],
+            kind=request.POST['kind'],
+            description = request.POST['description'],
+        )
+        return redirect("/")    
+    return render(request, "tool/tool_create.html")
+
+def tool_detail(request,pk):
+    tool = Tool.objects.all().get(pk=pk)
+    return render(request,"tool/tool.html",{"tool":tool})
+
+def tool_update(request,pk):
+    tool = Tool.objects.all().get(pk=pk)
+    if request.method == "POST":
+        tool.name = request.POST['name']
+        tool.kind = request.POST['kind']
+        tool.description = request.POST['description']
+        tool.save()  
+        return redirect(f"idea/{tool.pk}")
+    return render(request,"idea/idea_update.html",{"tool" : tool})

@@ -2,13 +2,20 @@ from django.db import models
 
 # Create your models here.
 
-class Post(models.Model):
-    title = models.CharField(max_length=64) #문자열 컬럼
-    user = models.CharField(max_length=32)
-    content = models.TextField()
-    region = models.CharField(max_length=16)
-    price = models.IntegerField()
+
+class Tool(models.Model):
     
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=32)
+    kind = models.CharField(max_length=32)
+    description = models.TextField()
     
+class Idea(models.Model):
+    Tool_list = [('django','Django'), ('react','React'),('java','Java'),('c++','C++'),('python','Python')]
+    name = models.CharField(max_length=32)
+    image = models.FileField(blank=True,upload_to='idea/%Y%m%d')
+    description = models.TextField()
+    interest = models.IntegerField()
+    devtool = models.CharField(max_length=52,choices=Tool_list)
+
+    
+

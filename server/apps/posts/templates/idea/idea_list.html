@@ -1,0 +1,20 @@
+{% extends "header.html" %}
+{% block content %}
+<form action="" method="get">
+    <select name="search_mode" id="search_mode">
+        <option value="">조회 선택</option>
+        <option value="name">이름순</option>
+        <option value="date">등록순</option>
+        <option value="favorite">찜하기순</option>
+    </select>
+</form>
+{% for idea in ideas %}
+<p>
+<img src="{{idea.image.url}}"/>
+</p>
+<small><a href="idea/{{idea.pk}}">{{idea.name}}</a></small>
+<small>예상 개발 툴 : {{idea.devtool}}</small>
+<small>{{idea.interest}}</small>
+{% endfor %}
+</div>
+{% endblock content %}
